@@ -1,0 +1,75 @@
+import re
+from moderation.wordlists import (
+    PROFANITY_TERMS,
+    SLUR_TERMS,
+    SEXUAL_EXPLICIT_TERMS,
+    THREAT_TERMS,
+    TARGETED_HARASSMENT_PATTERNS,
+    PHONE_REGEX,
+    EMAIL_REGEX,
+    SOCIAL_HANDLE_REGEX
+)
+
+def detect_personal_info(text: str) -> bool:
+    """Scans for phone numbers, emails, and direct social media tags."""
+    if re.search(PHONE_REGEX, text):
+        return True
+    if re.search(EMAIL_REGEX, text):
+        return True
+    if re.search(SOCIAL_HANDLE_REGEX, text, re.IGNORECASE):
+        return True
+    return False
+
+def analyze_content(text: str) -> dict:
+    """
+    Evaluates text and returns classification severity:
+    - CLEAN
+    - WARNING (Moderate profanity or minor violation)
+    - SEVERE (Slurs, threats, doxxing, explicit harassment)
+    """
+    cleaned_text = text.lower()
+    words = set(re.findall(r'\b\w+\b', cleaned_text))
+    
+    reasons = []
+    severity = "CLEAN"
+    
+    # 1. Check Personal Information
+    if detect_personal_info(text):
+        severity = "SEVERE"
+        reasons.append("Contains private personal information (phone number, email, or social handle).")
+
+    # 2. Check Threat terms
+    for term in THREAT_TERMS:
+        if term in cleaned_text:
+            severity = "SEVERE"
+            reasons.append("Contains threats or violence.")
+            break
+
+    # 3. Check Slurs
+    if words.intersection(SLUR_TERMS):
+        severity = "SEVERE"
+        reasons.append("Contains hate speech or prohibited slurs.")
+
+    # 4. Check Explicit Sexual Content targeting or descriptions
+    if words.intersection(SEXUAL_EXPLICIT_TERMS):
+        severity = "SEVERE"
+        reasons.append("Contains sexually explicit content or non-consensual sexual descriptions.")
+
+    # 5. Check Targeted Harassment Patterns
+    for pattern in TARGETED_HARASSMENT_PATTERNS:
+        if re.search(pattern, cleaned_text):
+            severity = "SEVERE"
+            reasons.append("Contains patterns associated with targeted harassment.")
+            break
+
+    # 6. Check Moderate Profanity (if not already SEVERE)
+    if severity == "CLEAN" and words.intersection(PROFANITY_TERMS):
+        severity = "WARNING"
+        reasons.append("Contains profanity or inappropriate language.")
+
+    return {
+        "severity": severity,
+        "is_safe": severity == "CLEAN",
+        "reasons": reasons,
+        "text": text
+    }

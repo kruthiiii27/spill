@@ -1,0 +1,34 @@
+"""
+Configurable terms and patterns for automated content safety.
+"""
+
+PROFANITY_TERMS = {
+    'fuck', 'shit', 'asshole', 'bitch', 'bastard', 'cunt', 'dick', 'pussy',
+    'cock', 'motherfucker', 'bullshit'
+}
+
+SLUR_TERMS = {
+    'nigger', 'faggot', 'retard', 'spic', 'chink', 'kike', 'tranny', 'dyke'
+}
+
+SEXUAL_EXPLICIT_TERMS = {
+    'nsfw', 'porn', 'orgasm', 'blowjob', 'cundom', 'naked pic', 'nudes',
+    'send nudes', 'hookup place', 'cumshot', 'gangbang', 'anal'
+}
+
+THREAT_TERMS = {
+    'kill yourself', 'kys', 'going to beat', 'will stab', 'shoot up',
+    'die in a hole', 'bomb', 'murder', 'physical harm'
+}
+
+TARGETED_HARASSMENT_PATTERNS = [
+    r'everyone should hate',
+    r'expose this person',
+    r'ruin (his|her|their) life',
+    r'spread this everywhere'
+]
+
+# Regular Expressions for Personal Information Detection (Doxxing protection)
+PHONE_REGEX = r'(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}'
+EMAIL_REGEX = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+SOCIAL_HANDLE_REGEX = r'(@[a-zA-Z0-9_]{3,15}|instagram\.com/[a-zA-Z0-9._]+|snapchat\.com/add/[a-zA-Z0-9._]+)'

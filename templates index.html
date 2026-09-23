@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPILL ☕ — Anonymous Campus Stories</title>
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #241A17;
+            --bg-card: #2D211D;
+            --bg-surface: #382823;
+            --bg-hover: #45322C;
+            --text-primary: #F4EBDD;
+            --text-secondary: #D8C8B7;
+            --text-muted: #AFA094;
+            --accent-rose: #B88F91;
+            --accent-sage: #899783;
+            --accent-terracotta: #A96F5C;
+            --accent-caramel: #B58A62;
+            --border-subtle: rgba(216, 200, 183, 0.12);
+            --border-active: rgba(181, 138, 98, 0.4);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 50% 0%, #342521 0%, #241A17 75%);
+            background-attachment: fixed;
+        }
+
+        a { color: var(--accent-caramel); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--text-primary); }
+
+        /* Typography */
+        h1, h2, h3, .serif { font-family: var(--font-serif); font-weight: 700; color: var(--text-primary); }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(36, 26, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 1.5rem; list-style: none; }
+        .nav-link { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.65rem 1.3rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--accent-caramel); color: #1A1210; }
+        .btn-primary:hover { background: #c6996e; transform: translateY(-1px); }
+        .btn-secondary { background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+        .btn-secondary:hover { background: var(--bg-hover); }
+        .btn-danger { background: #8B3A3A; color: var(--text-primary); }
+
+        /* Main Container */
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; flex: 1; width: 100%; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem 3rem;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .hero h1 { font-size: 3.2rem; line-height: 1.15; margin-bottom: 1rem; }
+        .hero p { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .hero-actions { display: flex; justify-content: center; gap: 1rem; }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: var(--shadow-soft);
+            transition: border-color 0.2s;
+        }
+
+        .card:hover { border-color: var(--border-active); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .anon-meta { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.85rem; }
+
+        .card-content {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            white-space: pre-line;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .card-actions { display: flex; gap: 1rem; align-items: center; }
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .action-btn:hover { color: var(--text-primary); }
+        .action-btn.active { color: var(--accent-rose); }
+
+        /* Tea of the Day Banner */
+        .totd-card {
+            background: linear-gradient(135deg, #3D2B25 0%, #2D211D 100%);
+            border: 1px solid var(--accent-caramel);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .totd-badge {
+            background: var(--accent-caramel);
+            color: #1a1210;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 0 0 8px 8px;
+            position: absolute;
+            top: 0;
+            right: 2rem;
+        }
+
+        /* Forms */
+        .form-group { margin-bottom: 1.2rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-secondary); }
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+        }
+
+        .form-control:focus { outline: none; border-color: var(--accent-caramel); }
+        textarea.form-control { min-height: 160px; resize: vertical; }
+
+        /* Category Pills */
+        .category-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .pill {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .pill:hover, .pill.active { background: var(--bg-hover); color: var(--text-primary); border-color: var(--accent-caramel); }
+
+        /* Toast Notifications */
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+        .toast {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            padding: 0.9rem 1.4rem;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--accent-caramel);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.error { border-left-color: var(--accent-rose); }
+        .toast.success { border-left-color: var(--accent-sage); }
+
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Mobile Bottom Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(36, 26, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-subtle);
+            padding: 0.6rem 0;
+            z-index: 900;
+            justify-content: space-around;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-nav { display: flex; }
+            .hero h1 { font-size: 2.2rem; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">SPILL ☕</a>
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link {% if view=='home' %}active{% endif %}">Home</a></li>
+                <li><a href="/explore" class="nav-link {% if view=='explore' %}active{% endif %}">Explore</a></li>
+                <li><a href="/trending" class="nav-link {% if view=='trending' %}active{% endif %}">Trending</a></li>
+                {% if current_user %}
+                    <li><a href="/my-spills" class="nav-link {% if view=='my_spills' %}active{% endif %}">My Spills</a></li>
+                    <li><a href="/saved" class="nav-link {% if view=='saved' %}active{% endif %}">Saved</a></li>
+                    {% if current_user.is_admin %}
+                        <li><a href="/admin" class="nav-link {% if view=='admin' %}active{% endif %}" style="color:var(--accent-terracotta)">Admin</a></li>
+                    {% endif %}
+                    <li><a href="/spill" class="btn btn-primary">Spill Something</a></li>
+                    <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+                {% else %}
+                    <li><a href="/guidelines" class="nav-link">Guidelines</a></li>
+                    <li><a href="/auth/login" class="nav-link">Login</a></li>
+                    <li><a href="/auth/register" class="btn btn-primary">Get Started</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div class="toast-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- MAIN CONTAINER & VIEWS -->
+    <div class="container">
+
+        <!-- 1. HOME VIEW -->
+        {% if view == 'home' %}
+            <section class="hero">
+                <h1>Got something to spill?</h1>
+                <p>Your campus. Your stories. No names attached.</p>
+                <div class="hero-actions">
+                    <a href="/spill" class="btn btn-primary">Spill Something</a>
+                    <a href="/explore" class="btn btn-secondary">Read the Tea</a>
+                </div>
+            </section>
+
+            <!-- TEA OF THE DAY -->
+            {% if tea_of_the_day %}
+                <div style="margin-bottom: 2.5rem;">
+                    <h2 class="serif" style="font-size: 1.3rem; margin-bottom: 0.8rem; color: var(--accent-caramel);">☕ TEA OF THE DAY</h2>
+                    <div class="card totd-card">
+                        <div class="totd-badge">Featured</div>
+                        <div class="card-header" style="margin-top: 0.5rem;">
+                            <span class="badge">{{ tea_of_the_day.category.name }}</span>
+                            <span class="anon-meta">🕶 Anonymous • {{ tea_of_the_day.created_at.strftime('%b %d') }}</span>
+                        </div>
+                        <div class="card-content">“{{ tea_of_the_day.content }}”</div>
+                        <div class="card-footer">
+                            <span>♡ {{ tea_of_the_day.reaction_count }} reactions</span>
+                            <a href="/posts/{{ tea_of_the_day.id }}/comments">💬 {{ tea_of_the_day.comment_count }} comments</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- ACTIVE POLL -->
+            {% if poll %}
+                <div class="card" style="border-color: var(--accent-sage);">
+                    <h3 class="serif" style="margin-bottom: 1rem; color: var(--accent-sage);">📊 Campus Poll</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">{{ poll.question }}</p>
+                    
+                    {% if user_voted_option_id or not current_user %}
+                        {% set total_votes = poll.options.map(attribute='votes_count')|sum or 1 %}
+                        {% for option in poll.options %}
+                            {% set pct = ((option.votes_count / total_votes) * 100)|round|int %}
+                            <div style="margin-bottom: 0.8rem;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+                                    <span>{{ option.option_text }} {% if option.id == user_voted_option_id %}<b>(Your Vote)</b>{% endif %}</span>
+                                    <span>{{ pct }}%</span>
+                                </div>
+                                <div style="background: var(--bg-surface); height: 8px; border-radius: 4px; overflow: hidden;">
+                                    <div style="background: var(--accent-sage); width: {{ pct }}%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <form action="/polls/{{ poll.id }}/vote" method="POST">
+                            {% for option in poll.options %}
+                                <div style="margin-bottom: 0.5rem;">
+                                    <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="option_id" value="{{ option.id }}" required>
+                                        {{ option.option_text }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-secondary" style="margin-top: 0.8rem;">Vote Anonymously</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- RECENT FEED -->
+            <h2 class="serif" style="margin-bottom: 1rem;">Recent Spills</h2>
+            {% for post in recent_spills %}
+                {% include 'index.html' ignore missing with context %}
+                <!-- Inline Post Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="badge">{{ post.category.name }}</span>
+                        <span class="anon-meta">🕶 Anonymous • {{ post.created_at.strftime('%H:%M') }}</span>
+                    </div>
+                    <div class="card-content">{{ post.content }}</div>
+                    <div class="card-footer">
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="toggleReaction({{ post.id }})">♡ <span id="react-count-{{ post.id }}">{{ post.reaction_count }}</span></button>
+                            <a href="/posts/{{ post.id }}/comments" class="action-btn">💬 {{ post.comment_count }}</a>
+                            <button class="action-btn" onclick="toggleSave({{ post.id }})">🔖 Save</button>
+                        </div>
+                        <div>
+                            <form action="/posts/{{ post.id }}/report" method="POST" style="display:inline;">
+                                <button type="submit" class="action-btn" style="color:var(--text-muted); font-size: 0.75rem;">Report</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card" style="text-align: center; padding: 3rem;">
+                    <p style="color: var(--text-muted);">☕ No tea here yet. Be the first person to spill something!</p>
+                </div>
+            {% endfor %}
+
+        <!-- 2. EXPLORE VIEW -->
+        {% elif view == 'explore' %}
+            <h1 class="serif" style="margin-bottom: 1rem;">Explore Tea</h1>
+            <div class="category-pills">
+                <a href="/explore" class="pill {% if not selected_category %}active{% endif %}">All</a>
+                {% for cat in categories %}
+                    <a href="/explore?category={{ cat.slug }}" class="pill {% if selected_category and selected_category.id == cat.id %}active{% endif %}">
+                        {{ cat.icon }} {{ cat.name }}
+                    </a>
+                {% endfor %}
+            </div>
+
+            {% for post in posts.items %}
+                <div class="card">
+                    <div class="card-header">
+                        <span class="badge">{{ post.category.name }}</span>
+                        <span class="anon-meta">🕶 Anonymous • {{ post.created_at.strftime('%b %d, %H:%M') }}</span>
+                    </div>
+                    <div class="card-content">{{ post.content }}</div>
+                    <div class="card-footer">
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="toggleReaction({{ post.id }})">♡ <span id="react-count-{{ post.id }}">{{ post.reaction_count }}</span></button>
+                            <a href="/posts/{{ post.id }}/comments" class="action-btn">💬 {{ post.comment_count }}</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted);">No spills found in this category.</p>
+            {% endfor %}
+
+        <!-- 3. SPILL SOMETHING FORM -->
+        {% elif view == 'spill' %}
+            <div style="max-width: 650px; margin: 0 auto;">
+                <h1 class="serif" style="margin-bottom: 0.5rem;">Spill Something</h1>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">Some things are easier when nobody knows it's you.</p>
+
+                <div class="card">
+                    <form action="/spill" method="POST">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select name="category_id" class="form-control" required>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.id }}" {% if draft_category == cat.id|string %}selected{% endif %}>{{ cat.icon }} {{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What's on your mind?</label>
+                            <textarea name="content" class="form-control" placeholder="Start spilling..." maxlength="1000" id="spill-input" required>{{ draft_content or '' }}</textarea>
+                            <div style="text-align: right; font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">
+                                <span id="char-count">0</span> / 1000
+                            </div>
+                        </div>
+                        <div style="background: var(--bg-surface); padding: 0.8rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                            🔒 <b>Privacy Guarantee:</b> Your username will never be displayed publicly with an anonymous spill.
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">SPILL IT ☕</button>
+                    </form>
+                </div>
+            </div>
+
+        <!-- 4. MY SPILLS (USER-OWNED DELETION) -->
+        {% elif view == 'my_spills' %}
+            <h1 class="serif" style="margin-bottom: 0.5rem;">My Spills</h1>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Only you can see this page. Manage your posted content.</p>
+
+            {% for post in posts %}
+                <div class="card">
+                    <div class="card-header">
+                        <span class="badge">{{ post.category.name }}</span>
+                        <span class="anon-meta">Posted {{ post.created_at.strftime('%b %d, %Y') }}</span>
+                    </div>
+                    <div class="card-content">{{ post.content }}</div>
+                    <div class="card-footer">
+                        <span>♡ {{ post.reaction_count }} reactions • 💬 {{ post.comment_count }} comments</span>
+                        <form action="/posts/{{ post.id }}/delete" method="POST" onsubmit="return confirm('Delete this spill? This action cannot be undone.');">
+                            <button type="submit" class="btn btn-danger" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted);">You haven't spilled anything yet.</p>
+            {% endfor %}
+
+        <!-- 5. COMMENTS VIEW -->
+        {% elif view == 'comments' %}
+            <a href="/explore" style="display:inline-block; margin-bottom:1rem;">← Back to feed</a>
+            <div class="card" style="border-color: var(--accent-caramel);">
+                <div class="card-header">
+                    <span class="badge">{{ post.category.name }}</span>
+                    <span class="anon-meta">🕶 Anonymous</span>
+                </div>
+                <div class="card-content">{{ post.content }}</div>
+            </div>
+
+            <h3 class="serif" style="margin: 2rem 0 1rem;">Comments ({{ comments|length }})</h3>
+            
+            <form action="/posts/{{ post.id }}/comments" method="POST" style="margin-bottom: 2rem;">
+                <div class="form-group">
+                    <textarea name="content" class="form-control" style="min-height: 80px;" placeholder="Add an anonymous comment..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Comment Anonymously</button>
+            </form>
+
+            {% for comment in comments %}
+                <div class="card" style="padding: 1rem; margin-bottom: 0.8rem;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.85rem; color:var(--text-muted);">
+                        <span>🕶 Anonymous</span>
+                        <span>{{ comment.created_at.strftime('%H:%M') }}</span>
+                    </div>
+                    <div>{{ comment.content }}</div>
+                    {% if current_user and (current_user.id == comment.user_id or current_user.is_admin) %}
+                        <div style="text-align:right; margin-top: 0.4rem;">
+                            <form action="/comments/{{ comment.id }}/delete" method="POST" style="display:inline;">
+                                <button type="submit" style="background:none; border:none; color:var(--accent-rose); cursor:pointer; font-size:0.75rem;">Delete</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        <!-- 6. ADMIN DASHBOARD -->
+        {% elif view == 'admin' %}
+            <h1 class="serif" style="margin-bottom: 1.5rem;">Administrative Console</h1>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div class="card" style="text-align: center;"><h2>{{ total_users }}</h2><p style="color:var(--text-muted);">Total Users</p></div>
+                <div class="card" style="text-align: center;"><h2>{{ total_posts }}</h2><p style="color:var(--text-muted);">Active Spills</p></div>
+                <div class="card" style="text-align: center;"><h2>{{ total_reports }}</h2><p style="color:var(--accent-rose);">Pending Reports</p></div>
+                <div class="card" style="text-align: center;"><h2>{{ total_comments }}</h2><p style="color:var(--text-muted);">Comments</p></div>
+            </div>
+
+            <h2 class="serif" style="margin-bottom: 1rem;">Pending User Reports</h2>
+            {% for r in reports %}
+                <div class="card">
+                    <p><b>Reason:</b> {{ r.reason }}</p>
+                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">"{{ r.post.content }}"</p>
+                    <div style="display:flex; gap:10px; margin-top:1rem;">
+                        <form action="/admin/reports/{{ r.id }}/action" method="POST">
+                            <input type="hidden" name="action" value="delete_post">
+                            <button type="submit" class="btn btn-danger">Remove Post</button>
+                        </form>
+                        <form action="/admin/reports/{{ r.id }}/action" method="POST">
+                            <input type="hidden" name="action" value="suspend_user">
+                            <button type="submit" class="btn btn-secondary">Suspend Author</button>
+                        </form>
+                        <form action="/admin/reports/{{ r.id }}/action" method="POST">
+                            <input type="hidden" name="action" value="dismiss">
+                            <button type="submit" class="btn btn-secondary">Dismiss</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">No pending reports.</p>
+            {% endfor %}
+
+        <!-- 7. AUTHENTICATION (LOGIN/REGISTER) -->
+        {% elif view == 'auth_login' or view == 'auth_register' %}
+            <div style="max-width: 420px; margin: 3rem auto;">
+                <div class="card">
+                    <h2 class="serif" style="margin-bottom: 1.5rem; text-align: center;">
+                        {% if view == 'auth_login' %}Login to SPILL{% else %}Create Account{% endif %}
+                    </h2>
+                    <form action="{% if view == 'auth_login' %}/auth/login{% else %}/auth/register{% endif %}" method="POST">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        {% if view == 'auth_register' %}
+                            <div class="form-group">
+                                <label class="form-label">Email (Optional)</label>
+                                <input type="email" name="email" class="form-control">
+                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        {% if view == 'auth_register' %}
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" name="confirm_password" class="form-control" required>
+                            </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            {% if view == 'auth_login' %}Login{% else %}Register{% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        <!-- 8. GUIDELINES -->
+        {% elif view == 'guidelines' %}
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h1 class="serif" style="margin-bottom: 1rem;">Community Guidelines</h1>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Spill responsibly. Anonymous doesn't mean consequence-free.</p>
+                <div class="card">
+                    <h3>Allowed Content</h3>
+                    <p style="color:var(--text-muted); margin-bottom: 1rem;">✓ Harmless campus stories, funny incidents, crush confessions, academic reviews, opinions.</p>
+                    <h3>Prohibited Content</h3>
+                    <p style="color:var(--accent-rose);">✕ Personal info (doxxing), threats, slurs, targeted harassment, explicit sexual content, phone numbers.</p>
+                </div>
+            </div>
+
+        <!-- ERROR PAGE -->
+        {% elif view == 'error' %}
+            <div style="text-align: center; padding: 5rem 1rem;">
+                <h1 class="serif" style="font-size: 4rem; color: var(--accent-caramel);">{{ error_code }}</h1>
+                <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;">{{ message }}</p>
+                <a href="/" class="btn btn-primary">Back to Home</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Spill responsibly. Don’t post private information or target individuals. ☕</p>
+        <p style="margin-top: 8px;">
+            <a href="/guidelines">Guidelines</a> • <a href="/about">About</a>
+        </p>
+    </footer>
+
+    <!-- MOBILE NAVIGATION -->
+    <div class="mobile-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/explore" class="nav-link">Explore</a>
+        <a href="/spill" class="nav-link" style="color: var(--accent-caramel);">Spill</a>
+        <a href="/my-spills" class="nav-link">Mine</a>
+    </div>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Real-time character counter
+        const spillInput = document.getElementById('spill-input');
+        const charCount = document.getElementById('char-count');
+        if (spillInput && charCount) {
+            spillInput.addEventListener('input', () => {
+                charCount.textContent = spillInput.value.length;
+            });
+        }
+
+        // Asynchronous Reaction Handler
+        async function toggleReaction(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/react`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reaction_type: 'heart' })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById(`react-count-${postId}`).textContent = data.count;
+                } else if (response.status === 401) {
+                    window.location.href = '/auth/login';
+                }
+            } catch (err) {
+                console.error("Reaction failed", err);
+            }
+        }
+
+        // Asynchronous Bookmark Handler
+        async function toggleSave(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/save`, { method: 'POST' });
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.saved ? "✓ Saved to your spills." : "Removed from saved.");
+                } else if (response.status === 401) {
+                    window.location.href = '/auth/login';
+                }
+            } catch (err) {
+                console.error("Bookmark failed", err);
+            }
+        }
+
+        // Auto-hide toast notifications after 4 seconds
+        setTimeout(() => {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(t => t.style.display = 'none');
+        }, 4000);
+    </script>
+</body>
+</html>
